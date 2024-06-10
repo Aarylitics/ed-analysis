@@ -1,4 +1,4 @@
-__author__ = 'Susan Davis, sed2001@ad.unc.edu, Onyen=sed2001'
+#__author__ = 'Susan Davis, sed2001@ad.unc.edu, Onyen=sed2001'
 # Ed Sheeran Sentiment Analysis
 
 # Load Libraries
@@ -10,6 +10,7 @@ import collections
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.corpus import stopwords
 
 # Load Data
 
@@ -46,7 +47,7 @@ ed['clean_lyric'] = ed['Lyric'].str.lower()
 ed['clean_lyric'] = ed['clean_lyric'].str.replace(r'[^\w\s]', '', regex=True)
 
 
-# List of stop words
+# List of stop words (susan words)
 stop = [
     'the', 'a', 'this', 'that', 'to', 'is', 'am', 'was', 'were', 'be', 'being', 'been', 'and',
     'or', 'but', 'if', 'then', 'else', 'when', 'while', 'of', 'at', 'by', 'for', 'with', 'about',
@@ -61,8 +62,26 @@ stop = [
     'does', 'did', 'doing', 'has', 'have', 'had', 'having', 'are'
 ]
 
-# Remove stop words
+# list of stop words (package words)
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
+
+#tokenize words (dont need to do this, since we did .lower above)
+#clean_lyric = word_tokenize(lyric)
+
+
+# Remove stop words (susan)
 ed['clean_lyric'] = ed['clean_lyric'].apply(lambda x: ' '.join([word for word in x.split() if word not in stop]))
+
+#remove stop words (example)
+clean_lyric = ed['clean_lyric']
+
+for w in clean_lyric:
+    if w not in stop_words:
+        filtered_sentence.append(w)
+ 
+print(word_tokens)
+print(filtered_sentence)
 
 
 # check that data was properly cleaned
